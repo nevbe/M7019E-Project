@@ -1,13 +1,13 @@
-package com.ltu.m7019eblogapp.ui.notifications
+package com.ltu.m7019eblogapp.ui.browse
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class NotificationsViewModel : ViewModel() {
+class BrowseViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+        value = "This is the browse Fragment"
     }
     val text: LiveData<String> = _text
 }
