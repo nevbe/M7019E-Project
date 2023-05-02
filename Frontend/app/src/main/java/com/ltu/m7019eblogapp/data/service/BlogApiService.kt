@@ -91,18 +91,20 @@ interface BlogApiService {
         @Body params: PostSearchBody,
         @Query("set")
         set: Int = 1
-    )
+    ) : List<Post>
+
     @POST("search/categories")
     suspend fun searchCategory(
         @Body params: CategorySearchBody,
         @Query("set")
         set: Int = 1
-    )
+    ) : List<Category>
+
     @POST("search/tags")
     suspend fun searchTag(
         @Body params: TagSearchBody,
         @Query("set")
         set: Int = 1
-    )
+    ) : List<Tag>
 
 }
