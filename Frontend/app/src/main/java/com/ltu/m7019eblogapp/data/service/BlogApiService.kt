@@ -44,14 +44,14 @@ interface BlogApiService {
     suspend fun getUser(
         @Path("user_id")
         user_id: String
-    )
+    ) : User
     @GET("user/{user_id}/posts")
     suspend fun getUserPosts(
         @Path("user_id")
         user_id: String,
         @Query("set")
         set: Int = 1
-    )
+    ) : List<Post>
 
     /*
     TODO: Auth

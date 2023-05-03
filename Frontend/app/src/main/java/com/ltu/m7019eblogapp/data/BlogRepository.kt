@@ -37,62 +37,62 @@ interface BlogRepository {
 
 }
 
-class NetworkBlogRepository(private val blogApiService: BlogApiService) : BlogRepository {
+class NetworkBlogRepository(private val api: BlogApiService) : BlogRepository {
 
     //-----------------------------Posts-------------------------
 
     override suspend fun getPosts(set: Int): List<Post> {
-        TODO("Not yet implemented")
+        return api.getPosts(set)
     }
 
     override suspend fun getPost(post_id: String): Post {
-        TODO("Not yet implemented")
+        return api.getPost(post_id)
     }
 
     //----------------------Users-------------------------------
 
     override suspend fun getUsers(set: Int): List<User> {
-        TODO("Not yet implemented")
+        return api.getUsers(set)
     }
 
     override suspend fun getUser(user_id: String): User {
-        TODO("Not yet implemented")
+        return api.getUser(user_id)
     }
 
     override suspend fun getUserPosts(user_id: String, set: Int): List<Post> {
-        TODO("Not yet implemented")
+        return api.getUserPosts(user_id, set)
     }
 
     //--------------------Categories & Tags------------------------------
 
     override suspend fun getCategories(set: Int): List<Category> {
-        TODO("Not yet implemented")
+        return api.getCategories(set)
     }
 
     override suspend fun getCategory(category_id: String): Category {
-        TODO("Not yet implemented")
+        return api.getCategory(category_id)
     }
 
     override suspend fun getTags(set: Int): List<Tag> {
-        TODO("Not yet implemented")
+        return api.getTags(set)
     }
 
     override suspend fun getTag(tag_id: String): Tag {
-        TODO("Not yet implemented")
+        return api.getTag(tag_id)
     }
 
     //------------------------Search--------------------------------------
 
     override suspend fun searchPost(params: PostSearchBody, set: Int): List<Post> {
-        TODO("Not yet implemented")
+        return api.searchPost(params, set)
     }
 
     override suspend fun searchCategory(params: CategorySearchBody, set: Int): List<Category> {
-        TODO("Not yet implemented")
+        return api.searchCategory(params, set)
     }
 
     override suspend fun searchTag(params: TagSearchBody, set: Int): List<Tag> {
-        TODO("Not yet implemented")
+        return api.searchTag(params, set)
     }
 
 }
