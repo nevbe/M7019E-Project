@@ -11,5 +11,5 @@ data class Category(
     @Json(name = "name")
     var name: String,
     @Json(name = "description")
-    var desc: String
+    var desc: String = ""
     ) : Parcelable

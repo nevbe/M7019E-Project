@@ -5,6 +5,7 @@ import com.ltu.m7019eblogapp.model.Post
 import com.ltu.m7019eblogapp.model.Tag
 import com.ltu.m7019eblogapp.model.User
 
+/*
 class MockDatabase {
     val users = mutableListOf<User>()
     val posts = mutableListOf<Post>()
@@ -140,3 +141,5 @@ class MockDatabase {
         )
     }
 }
+
+ */
