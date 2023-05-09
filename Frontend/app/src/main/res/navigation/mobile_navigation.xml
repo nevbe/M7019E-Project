@@ -22,4 +22,11 @@
         android:name="com.ltu.m7019eblogapp.ui.browse.BrowseFragment"
         android:label="@string/title_browse"
         tools:layout="@layout/fragment_browse" />
+
+    <fragment
+        android:id="@+id/navigation_specific_post"
+        android:name="com.ltu.m7019eblogapp.ui.post.PostFragment"
+        android:label="@string/title_create_post"
+        tools:layout="@layout/fragment_create_post"/>
+
 </navigation>

@@ -1,13 +1,13 @@
 package com.ltu.m7019eblogapp.data
 
+import com.auth0.android.result.Credentials
 import com.ltu.m7019eblogapp.data.service.BlogApiService
 import com.ltu.m7019eblogapp.data.service.CategorySearchBody
 import com.ltu.m7019eblogapp.data.service.PostSearchBody
 import com.ltu.m7019eblogapp.data.service.TagSearchBody
-import com.ltu.m7019eblogapp.model.Category
-import com.ltu.m7019eblogapp.model.Post
-import com.ltu.m7019eblogapp.model.Tag
-import com.ltu.m7019eblogapp.model.User
+import com.ltu.m7019eblogapp.model.*
+import okhttp3.internal.wait
+import retrofit2.HttpException
 
 interface BlogRepository {
     //-----------------------------Posts-------------------------
@@ -20,6 +20,8 @@ interface BlogRepository {
     suspend fun getUsers(set: Int = 1) : List<User>
     suspend fun getUser(user_id: String) : User
     suspend fun getUserPosts(user_id: String, set: Int = 1) : List<Post>
+    suspend fun getCurrentUser(accessToken: String) : User
+    suspend fun createUser(accessToken: String, name: String) : User
 
     //--------------------Categories & Tags------------------------------
 
@@ -34,6 +36,9 @@ interface BlogRepository {
     suspend fun searchPost(params: PostSearchBody, set: Int = 1) : List<Post>
     suspend fun searchCategory(params: CategorySearchBody, set: Int = 1) : List<Category>
     suspend fun searchTag(params: TagSearchBody, set: Int = 1) : List<Tag>
+
+    //--------------------------AUTH0--------------------------------------
+    suspend fun login(accessToken: String, name: String)
 
 }
 
@@ -61,6 +66,14 @@ class NetworkBlogRepository(private val api: BlogApiService) : BlogRepository {
 
     override suspend fun getUserPosts(user_id: String, set: Int): List<Post> {
         return api.getUserPosts(user_id, set)
+    }
+
+    override suspend fun getCurrentUser(accessToken: String): User {
+        return api.getCurrentUser("Bearer $accessToken")
+    }
+
+    override suspend fun createUser(accessToken: String, name: String): User {
+        return api.createUser("Bearer $accessToken", MiniUser(name))
     }
 
     //--------------------Categories & Tags------------------------------
@@ -95,4 +108,22 @@ class NetworkBlogRepository(private val api: BlogApiService) : BlogRepository {
         return api.searchTag(params, set)
     }
 
+    //-----------------------AUTH0-----------------------------------------
+
+    override suspend fun login(accessToken: String, name: String) {
+        try{
+            getCurrentUser(accessToken)
+        } catch(e : HttpException ){
+            when(e.code()){
+                404 -> {
+                    // Valid token but user not in DB
+                    createUser(accessToken, name)
+                }
+                401 -> {
+                    TODO("Invalid token")
+                }
+            }
+        }
+
+    }
 }
