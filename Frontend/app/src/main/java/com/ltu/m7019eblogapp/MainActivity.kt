@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        if(cachedUserProfile == null){
+        if(cachedUserProfile != null){
             enableUI()
         } else {
             loginWithBrowser()
