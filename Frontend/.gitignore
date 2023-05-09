@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+src/main/java/com/ltu/m7019eblogapp/utils/SECRETS.kt
+src/main/res/values/auth0.xml
