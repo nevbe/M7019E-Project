@@ -1,9 +1,10 @@
 package com.ltu.m7019eblogapp.data.service
 
-import com.ltu.m7019eblogapp.model.Category
-import com.ltu.m7019eblogapp.model.Post
-import com.ltu.m7019eblogapp.model.User
+import android.os.Parcelable
+import com.ltu.m7019eblogapp.model.*
 import com.ltu.m7019eblogapp.model.Tag
+import com.squareup.moshi.Json
+import kotlinx.parcelize.Parcelize
 import retrofit2.http.*
 
 //TODO: Add @Headers({"Authorization", "Bearer "+ token}) for auth
@@ -53,10 +54,19 @@ interface BlogApiService {
         set: Int = 1
     ) : List<Post>
 
-    /*
-    TODO: Auth
+    @Headers("Content-Type: application/json;charset=UTF-8")
     @GET("user/me")
-    suspend fun getCurrentUser()
+    suspend fun getCurrentUser(
+        @Header("Authorization") auth: String
+    ) : User
+
+    @Headers("Content-Type: application/json;charset=UTF-8")
+    @POST("user")
+    suspend fun createUser(
+        @Header("Authorization") auth: String,
+        @Body miniUser : MiniUser,
+    ) : User
+    /*
     @PATCH("user/{user_id}")
     suspend fun patchUser()
     @DELETE("user/{user_id}")

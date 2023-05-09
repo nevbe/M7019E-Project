@@ -14,3 +14,4 @@
 .cxx
 local.properties
 SECRETS.kt
+auth0.xml

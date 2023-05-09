@@ -20,3 +20,9 @@ data class User (
     var createdAt: String = ""
     //var auth0_id: String = "",
         ) : Parcelable
+
+@Parcelize
+data class MiniUser (
+    @Json(name = "username")
+    val name : String
+) : Parcelable
