@@ -1,7 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
     id 'kotlin-parcelize'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -10,10 +12,12 @@ android {
 
     defaultConfig {
         applicationId "com.ltu.m7019eblogapp"
-        minSdk 22
-        targetSdk 32
+        minSdk 24
+        targetSdk 33
         versionCode 1
         versionName "1.0"
+
+        manifestPlaceholders = [auth0Domain: "@string/com_auth0_domain", auth0Scheme: "@string/com_auth0_scheme"]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -65,13 +69,13 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.3"
 
-    //JSON & Serialization converter
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
+    // AUTH0 Authentication
+    implementation 'com.auth0.android:auth0:2.0.0'
 
     //Glide Image library -> https://github.com/bumptech/glide
     implementation 'com.github.bumptech.glide:glide:4.13.0'
     implementation 'androidx.room:room-common:2.5.1'
+    implementation 'androidx.annotation:annotation:1.6.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
     //TODO?: Room Database
