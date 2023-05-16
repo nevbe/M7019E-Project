@@ -13,4 +13,19 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <!-- Circle image styling -->
+    <style name="circleImageView" parent="Theme.M7019EBlogApp">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="Theme.M7019EBlogApp.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.M7019EBlogApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.M7019EBlogApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

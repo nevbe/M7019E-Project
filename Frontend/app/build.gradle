@@ -62,7 +62,7 @@ dependencies {
     implementation 'androidx.activity:activity:1.7.1'
 
     //Material UI ->
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
 
     // Retrofit and Moshi and Okhttp
     implementation 'com.squareup.moshi:moshi-kotlin:1.14.0'

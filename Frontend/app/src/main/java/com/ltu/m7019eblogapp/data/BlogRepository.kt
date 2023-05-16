@@ -38,7 +38,7 @@ interface BlogRepository {
     suspend fun searchTag(params: TagSearchBody, set: Int = 1) : List<Tag>
 
     //--------------------------AUTH0--------------------------------------
-    suspend fun login(accessToken: String, name: String)
+    suspend fun login(accessToken: String, name: String) : User?
 
 }
 
@@ -110,14 +110,15 @@ class NetworkBlogRepository(private val api: BlogApiService) : BlogRepository {
 
     //-----------------------AUTH0-----------------------------------------
 
-    override suspend fun login(accessToken: String, name: String) {
+    override suspend fun login(accessToken: String, name: String) : User? {
         try{
-            getCurrentUser(accessToken)
+            return getCurrentUser(accessToken)
         } catch(e : HttpException ){
             when(e.code()){
                 404 -> {
                     // Valid token but user not in DB
                     createUser(accessToken, name)
+                    return getCurrentUser(accessToken)
                 }
                 401 -> {
                     TODO("Invalid token")
@@ -125,5 +126,6 @@ class NetworkBlogRepository(private val api: BlogApiService) : BlogRepository {
             }
         }
 
+        return null
     }
 }
