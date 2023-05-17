@@ -30,7 +30,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_create"
         android:name="com.ltu.m7019eblogapp.ui.createpost.CreatePostFragment"
         android:label="@string/title_create_post"
         tools:layout="@layout/fragment_create_post" >
@@ -43,7 +43,7 @@
 
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_browse"
         android:name="com.ltu.m7019eblogapp.ui.browse.BrowseFragment"
         android:label="@string/title_browse"
         tools:layout="@layout/fragment_browse">
@@ -63,5 +63,21 @@
             android:name="loggedInUser"
             app:argType="com.ltu.m7019eblogapp.model.User"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.ltu.m7019eblogapp.ui.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile">
+
+        <argument
+            android:name="loggedInUser"
+            app:argType="com.ltu.m7019eblogapp.model.User"/>
+    </fragment>
+
+    <action
+        android:id="@+id/navigation_global_toProfile"
+        app:destination="@+id/navigation_profile"
+        />
 
 </navigation>

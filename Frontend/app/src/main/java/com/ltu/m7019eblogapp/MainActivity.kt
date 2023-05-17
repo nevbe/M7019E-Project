@@ -1,14 +1,13 @@
 package com.ltu.m7019eblogapp
 
-import android.opengl.Visibility
 import android.os.Bundle
+import android.text.Layout.Directions
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 
-import androidx.activity.viewModels
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -17,10 +16,8 @@ import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
-import com.ltu.m7019eblogapp.data.util.DataFetchStatus
 import com.ltu.m7019eblogapp.databinding.ActivityMainBinding
 import com.ltu.m7019eblogapp.model.User
-import com.ltu.m7019eblogapp.ui.login.LoginViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     private var cachedUser: User? = null
 
-    private val loginViewModel : LoginViewModel by viewModels()
+    //private val loginViewModel : LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,16 +33,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(findViewById(R.id.topAppBar))
-
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
+
+        setSupportActionBar(findViewById(R.id.topAppBar))
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.navigation_home, R.id.navigation_create, R.id.navigation_browse
             )
         )
 
@@ -74,7 +71,7 @@ class MainActivity : AppCompatActivity() {
 
         if(cachedUser != null && menu != null){
             //Grab menu item
-            val profileItem : MenuItem = menu.findItem(R.id.header_menu_profile_item)
+            val profileItem : MenuItem = menu.findItem(R.id.navigation_profile)
             //Grab image view inside of said item
             val profilePicView : ShapeableImageView? = profileItem.actionView?.findViewById(R.id.profile_pic_header_view)
 
@@ -83,7 +80,12 @@ class MainActivity : AppCompatActivity() {
                 .override(85,85) // Set image size
                 .into(profilePicView!!);  // imageview object
 
-            //TODO: Logout knapp
+            val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
+            val navController = navHostFragment.navController
+
+            profilePicView.setOnClickListener {
+                navController.navigate(R.id.navigation_global_toProfile)
+            }
 
         }
 
