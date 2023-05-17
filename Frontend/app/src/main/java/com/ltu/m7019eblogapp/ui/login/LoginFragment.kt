@@ -61,16 +61,24 @@ class LoginFragment : Fragment() {
         val apiClient = AuthenticationAPIClient(account)
         manager = CredentialsManager(apiClient, SharedPreferencesStorage(this.requireContext()))
 
+        binding.buttonLogin.setOnClickListener {
+            loginWithBrowser()
+        }
+
         // Observe login-status and perform relevant actions
         viewModel.userFetchStatus.observe(viewLifecycleOwner) { status ->
             status?.let {
                 when (it) {
                     DataFetchStatus.LOADING -> {
-                        binding.buttonLogin.isActivated = false
+                        binding.buttonLogin.visibility = View.GONE
+                        binding.textLoadingLogin.visibility = View.VISIBLE
+                        binding.progressCircularLoadingLogin.visibility = View.VISIBLE
                         println("loading user...")
                     }
                     DataFetchStatus.ERROR -> {
-                        binding.buttonLogin.isActivated = true
+                        binding.buttonLogin.visibility = View.VISIBLE
+                        binding.textLoadingLogin.visibility = View.GONE
+                        binding.progressCircularLoadingLogin.visibility = View.GONE
                         showSnackBar("Error logging in...")
                     }
                     DataFetchStatus.DONE -> {

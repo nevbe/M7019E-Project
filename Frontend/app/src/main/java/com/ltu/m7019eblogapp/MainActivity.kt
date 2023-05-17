@@ -82,6 +82,9 @@ class MainActivity : AppCompatActivity() {
                 .load(cachedUser!!.profilePicture) // image url
                 .override(85,85) // Set image size
                 .into(profilePicView!!);  // imageview object
+
+            //TODO: Logout knapp
+
         }
 
         return super.onCreateOptionsMenu(menu)
