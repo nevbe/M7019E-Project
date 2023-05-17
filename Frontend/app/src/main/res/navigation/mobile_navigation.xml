@@ -3,30 +3,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_login">
+
+    <fragment
+        android:id="@+id/navigation_login"
+        android:name="com.ltu.m7019eblogapp.ui.login.LoginFragment"
+        android:label="@string/title_login"
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_LoginFragment_to_HomeFragment"
+            app:destination="@+id/navigation_home"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.ltu.m7019eblogapp.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+
+        <argument
+            android:name="loggedInUser"
+            app:argType="com.ltu.m7019eblogapp.model.User"/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.ltu.m7019eblogapp.ui.createpost.CreatePostFragment"
         android:label="@string/title_create_post"
-        tools:layout="@layout/fragment_create_post" />
+        tools:layout="@layout/fragment_create_post" >
+
+        <argument
+            android:name="loggedInUser"
+            app:argType="com.ltu.m7019eblogapp.model.User"/>
+    </fragment>
+
+
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.ltu.m7019eblogapp.ui.browse.BrowseFragment"
         android:label="@string/title_browse"
-        tools:layout="@layout/fragment_browse" />
+        tools:layout="@layout/fragment_browse">
+
+        <argument
+            android:name="loggedInUser"
+            app:argType="com.ltu.m7019eblogapp.model.User"/>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_specific_post"
         android:name="com.ltu.m7019eblogapp.ui.post.PostFragment"
         android:label="@string/title_create_post"
-        tools:layout="@layout/fragment_create_post"/>
+        tools:layout="@layout/fragment_create_post">
+
+        <argument
+            android:name="loggedInUser"
+            app:argType="com.ltu.m7019eblogapp.model.User"/>
+    </fragment>
 
 </navigation>
