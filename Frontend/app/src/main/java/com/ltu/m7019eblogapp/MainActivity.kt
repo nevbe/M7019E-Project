@@ -105,6 +105,14 @@ class MainActivity : AppCompatActivity() {
         invalidateOptionsMenu() // Rebuild menu in order to call onCreateOptionsMenu
     }
 
+    fun disableUI(){
+        binding.navView.visibility = View.GONE
+        binding.topAppBar.visibility = View.GONE
+
+        cachedUser = null
+        binding.loggedInUser = null
+    }
+
     private fun showSnackBar(text: String) {
         Snackbar
             .make(

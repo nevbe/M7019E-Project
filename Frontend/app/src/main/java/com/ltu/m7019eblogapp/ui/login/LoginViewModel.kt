@@ -68,4 +68,8 @@ class LoginViewModel(
         }
     }
 
+    fun commitError(){
+        _userFetchStatus.value = DataFetchStatus.ERROR
+    }
+
 }

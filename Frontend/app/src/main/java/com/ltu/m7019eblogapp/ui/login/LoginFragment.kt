@@ -145,6 +145,7 @@ class LoginFragment : Fragment() {
                 override fun onFailure(error: AuthenticationException) {
                     showSnackBar(getString(R.string.login_failure_message, error.getCode()))
                     println(getString(R.string.login_failure_message, error.getCode()))
+                    viewModel.commitError()
                 }
 
                 override fun onSuccess(result: Credentials) {
