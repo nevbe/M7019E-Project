@@ -85,14 +85,15 @@ class MainActivity : AppCompatActivity() {
 
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
             val navController = navHostFragment.navController
-            val action = ProfileFragmentDirections.navigationGlobalToProfile()
 
             profilePicView.setOnClickListener {
-                navController.navigate(action)
+                navController.popBackStack() //Prevent fragment to display over previous fragment
+                navController.navigate(ProfileFragmentDirections.navigationGlobalToProfile())
             }
 
             val faqItem : MenuItem = menu.findItem(R.id.navigation_faq)
             faqItem.setOnMenuItemClickListener {
+                navController.popBackStack() //Prevent fragment to display over previous fragment
                 navController.navigate(FaqFragmentDirections.navigationGlobalToFaq())
                 true
             }
