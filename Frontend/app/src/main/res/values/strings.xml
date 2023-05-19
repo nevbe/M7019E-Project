@@ -39,5 +39,14 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- CREATE POST FORM -->
+    <string name="create_post">CREATE POST</string>
+    <string name="title">Title</string>
+    <string name="content">Content</string>
+    <string name="media_url">Media (url)</string>
+    <string name="tag">Tag</string>
+    <string name="category">Category</string>
+    <string name="submit">Submit</string>
+
 
 </resources>
