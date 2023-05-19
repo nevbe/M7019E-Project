@@ -21,6 +21,11 @@ interface BlogApiService {
         @Path("post_id")
         post_id: String
     ) : Post
+    @POST("posts")
+    suspend fun createPost(
+        @Header("authorization") auth: String,
+        @Body post: Post
+    )
     /*
     TODO: Implement when login is done
     @PATCH("posts/{post_id}")
