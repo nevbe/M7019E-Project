@@ -3,11 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/navigation_faq"
+        android:icon="@drawable/ic_baseline_question_answer_24"
+        android:title="FAQ"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        app:showAsAction="always"
+        />
+
+    <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_baseline_person_24"
         android:title="@string/top_header_title"
         android:layout_height="match_parent"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         app:actionLayout="@layout/top_header_profile_item"
         app:showAsAction="always"/>
 

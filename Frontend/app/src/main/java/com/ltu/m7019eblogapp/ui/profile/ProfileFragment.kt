@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.auth0.android.Auth0
 import com.auth0.android.authentication.AuthenticationAPIClient
@@ -77,9 +78,14 @@ class ProfileFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        //activity?.supportFragmentManager?.popBackStack()
         _binding = null
     }
 
+    //TODO: Move to util?
+    /**
+     * Initiate AUTH0 logout flow
+     */
     private fun doLogout(){
         WebAuthProvider.logout(account).withScheme(getString(R.string.com_auth0_scheme))
             .start(this.requireContext(), object : Callback<Void?, AuthenticationException> {
@@ -99,6 +105,11 @@ class ProfileFragment : Fragment() {
             })
     }
 
+    //TODO: Move to util?
+    /**
+     * Finalize logout and reset cache
+     * - SHOULD ONLY BE USED AS A CALLBACK FROM doLogout()
+     */
     private fun finalizeLogout(){
         manager.clearCredentials()
 

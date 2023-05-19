@@ -134,6 +134,7 @@ class LoginFragment : Fragment() {
 
     }
 
+    //TODO: Move to util
     private fun loginWithBrowser(){
         WebAuthProvider
             .login(account)
@@ -161,6 +162,7 @@ class LoginFragment : Fragment() {
             })
     }
 
+    //TODO: Move to util
     private fun showUserProfile() {
         // Guard against showing the profile when no user is logged in
         if (cachedCredentials == null) {

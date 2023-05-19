@@ -66,6 +66,17 @@
 
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_faq"
+        android:name="com.ltu.m7019eblogapp.ui.faq.FaqFragment"
+        android:label="FAQ"
+        tools:layout="@layout/fragment_faq"/>
+
+    <action
+        android:id="@+id/navigation_global_toFaq"
+        app:destination="@+id/navigation_faq"
+        />
+
     <action
         android:id="@+id/navigation_global_toProfile"
         app:destination="@+id/navigation_profile"

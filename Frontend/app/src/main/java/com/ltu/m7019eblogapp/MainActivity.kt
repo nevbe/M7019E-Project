@@ -18,6 +18,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
 import com.ltu.m7019eblogapp.databinding.ActivityMainBinding
 import com.ltu.m7019eblogapp.model.User
+import com.ltu.m7019eblogapp.ui.faq.FaqFragmentDirections
 import com.ltu.m7019eblogapp.ui.profile.ProfileFragmentDirections
 
 class MainActivity : AppCompatActivity() {
@@ -90,7 +91,15 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(action)
             }
 
+            val faqItem : MenuItem = menu.findItem(R.id.navigation_faq)
+            faqItem.setOnMenuItemClickListener {
+                navController.navigate(FaqFragmentDirections.navigationGlobalToFaq())
+                true
+            }
+
         }
+
+
 
         return super.onCreateOptionsMenu(menu)
     }
