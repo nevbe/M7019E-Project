@@ -23,8 +23,8 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Override backaction in order to prevent going back to login screen
-        // TODO: Change so that it only does this if the target actually is the loginscreen :)
+        // Override backaction, bottom destinations should act as nav root
+        // This also prevents users from going back to login screen from home.
         requireActivity().onBackPressedDispatcher.addCallback(this) {}
     }
 

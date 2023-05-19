@@ -18,6 +18,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
 import com.ltu.m7019eblogapp.databinding.ActivityMainBinding
 import com.ltu.m7019eblogapp.model.User
+import com.ltu.m7019eblogapp.ui.profile.ProfileFragmentDirections
 
 class MainActivity : AppCompatActivity() {
 
@@ -80,11 +81,13 @@ class MainActivity : AppCompatActivity() {
                 .override(85,85) // Set image size
                 .into(profilePicView!!);  // imageview object
 
+
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
             val navController = navHostFragment.navController
+            val action = ProfileFragmentDirections.navigationGlobalToProfile()
 
             profilePicView.setOnClickListener {
-                navController.navigate(R.id.navigation_global_toProfile)
+                navController.navigate(action)
             }
 
         }
@@ -97,6 +100,7 @@ class MainActivity : AppCompatActivity() {
         binding.topAppBar.visibility = View.VISIBLE
 
         cachedUser = user
+        binding.loggedInUser = cachedUser
 
         invalidateOptionsMenu() // Rebuild menu in order to call onCreateOptionsMenu
     }

@@ -23,10 +23,6 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
 
-        <argument
-            android:name="loggedInUser"
-            app:argType="com.ltu.m7019eblogapp.model.User"/>
-
     </fragment>
 
     <fragment
@@ -35,9 +31,6 @@
         android:label="@string/title_create_post"
         tools:layout="@layout/fragment_create_post" >
 
-        <argument
-            android:name="loggedInUser"
-            app:argType="com.ltu.m7019eblogapp.model.User"/>
     </fragment>
 
 
@@ -59,9 +52,6 @@
         android:label="@string/title_create_post"
         tools:layout="@layout/fragment_create_post">
 
-        <argument
-            android:name="loggedInUser"
-            app:argType="com.ltu.m7019eblogapp.model.User"/>
     </fragment>
 
     <fragment
@@ -70,9 +60,6 @@
         android:label="Profile"
         tools:layout="@layout/fragment_profile">
 
-        <argument
-            android:name="loggedInUser"
-            app:argType="com.ltu.m7019eblogapp.model.User"/>
     </fragment>
 
     <action

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ltu.m7019eblogapp.databinding.FragmentBrowseBinding
@@ -16,6 +17,13 @@ class BrowseFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Override back action, bottom destinations should act as nav root
+        requireActivity().onBackPressedDispatcher.addCallback(this) {}
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

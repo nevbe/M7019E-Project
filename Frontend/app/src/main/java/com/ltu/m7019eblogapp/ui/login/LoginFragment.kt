@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.addCallback
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.auth0.android.Auth0
 import com.auth0.android.authentication.AuthenticationAPIClient
@@ -42,6 +44,13 @@ class LoginFragment : Fragment() {
     private lateinit var viewModel: LoginViewModel
 
     private var cachedCredentials: Credentials? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Override backaction
+        requireActivity().onBackPressedDispatcher.addCallback(this) {}
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -84,10 +93,14 @@ class LoginFragment : Fragment() {
                     DataFetchStatus.DONE -> {
                         println("User found, navigating to home")
 
-                        val grabbedUser: User = viewModel.loggedInUser.value!!
-                        (activity as MainActivity).enableUI(grabbedUser)
+                        // Initiate session
+                        val userSession : UserSessionViewModel by activityViewModels()
+                        userSession.user = viewModel.loggedInUser.value!!
+                        userSession.accessToken = cachedCredentials!!.accessToken
+
+                        (activity as MainActivity).enableUI(userSession.user!!)
                         this.findNavController().navigate(
-                            LoginFragmentDirections.actionLoginFragmentToHomeFragment(grabbedUser)
+                            LoginFragmentDirections.actionLoginFragmentToHomeFragment()
                         )
                     }
                 }
