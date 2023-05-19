@@ -8,6 +8,7 @@ import android.view.View
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -87,14 +88,21 @@ class MainActivity : AppCompatActivity() {
             val navController = navHostFragment.navController
 
             profilePicView.setOnClickListener {
-                navController.popBackStack() //Prevent fragment to display over previous fragment
+                println("Backstackentry: ${navController.currentBackStackEntry?.destination}")
+                if(navController.currentBackStackEntry?.destination?.id != R.id.navigation_faq){
+                    navController.popBackStack() //Prevent fragment to display over previous fragment
+                }
                 navController.navigate(ProfileFragmentDirections.navigationGlobalToProfile())
             }
 
             val faqItem : MenuItem = menu.findItem(R.id.navigation_faq)
             faqItem.setOnMenuItemClickListener {
-                navController.popBackStack() //Prevent fragment to display over previous fragment
+                println("Backstackentry: ${navController.currentBackStackEntry?.destination}")
+                if(navController.currentBackStackEntry?.destination?.id != R.id.navigation_profile){
+                    navController.popBackStack() //Prevent fragment to display over previous fragment
+                }
                 navController.navigate(FaqFragmentDirections.navigationGlobalToFaq())
+
                 true
             }
 

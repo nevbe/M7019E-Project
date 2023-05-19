@@ -99,9 +99,8 @@ class LoginFragment : Fragment() {
                         userSession.accessToken = cachedCredentials!!.accessToken
 
                         (activity as MainActivity).enableUI(userSession.user!!)
-                        this.findNavController().navigate(
-                            LoginFragmentDirections.actionLoginFragmentToHomeFragment()
-                        )
+                        val navController = this.findNavController()
+                        navController.navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
                     }
                 }
             }

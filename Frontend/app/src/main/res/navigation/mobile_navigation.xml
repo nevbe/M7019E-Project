@@ -13,6 +13,8 @@
 
         <action
             android:id="@+id/action_LoginFragment_to_HomeFragment"
+            app:popUpTo="@id/mobile_navigation"
+            app:popUpToInclusive="true"
             app:destination="@+id/navigation_home"/>
 
     </fragment>
@@ -62,7 +64,7 @@
 
         <action
             android:id="@+id/action_ProfileFragment_to_LoginFragment"
-            app:destination="@+id/navigation_login"/>
+            app:destination="@+id/navigation_login" />
 
     </fragment>
 
@@ -80,6 +82,6 @@
     <action
         android:id="@+id/navigation_global_toProfile"
         app:destination="@+id/navigation_profile"
-        />
+         />
 
 </navigation>
