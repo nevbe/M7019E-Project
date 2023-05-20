@@ -71,6 +71,9 @@ class LoginFragment : Fragment() {
         manager = CredentialsManager(apiClient, SharedPreferencesStorage(this.requireContext()))
 
         binding.buttonLogin.setOnClickListener {
+            binding.buttonLogin.visibility = View.GONE
+            binding.textLoadingLogin.visibility = View.VISIBLE
+            binding.progressCircularLoadingLogin.visibility = View.VISIBLE
             loginWithBrowser()
         }
 
