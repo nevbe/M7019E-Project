@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
@@ -25,7 +26,10 @@ import com.ltu.m7019eblogapp.data.service.TagSearchBody
 import com.ltu.m7019eblogapp.data.util.DataFetchStatus
 import com.ltu.m7019eblogapp.databinding.FragmentCreatePostBinding
 import com.ltu.m7019eblogapp.model.Category
+import com.ltu.m7019eblogapp.model.Post
+import com.ltu.m7019eblogapp.model.SubmittablePost
 import com.ltu.m7019eblogapp.model.Tag
+import com.ltu.m7019eblogapp.ui.login.UserSessionViewModel
 import kotlinx.coroutines.launch
 
 class CreatePostFragment : Fragment() {
@@ -41,6 +45,9 @@ class CreatePostFragment : Fragment() {
     // Selected tags, key of each tag is THE NAME, not the ID
     // TODO: Not a scalable sollution, but suitable for a mini-project
     private val selectedTags = HashMap<String, String>()
+    private var selectedCategory : Category? = null
+
+    private val userSession : UserSessionViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +66,6 @@ class CreatePostFragment : Fragment() {
 
         _binding = FragmentCreatePostBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        var selectedCategory : Category
 
         // =========================================================================================
         // ---------------------------- CATEGORY AUTOFILL ------------------------------------------
@@ -77,7 +83,7 @@ class CreatePostFragment : Fragment() {
 
         categorySelectView?.setOnItemClickListener { parent, _, position, _ ->
             selectedCategory = parent.getItemAtPosition(position) as Category
-            println("USER SELECTED ${selectedCategory.name} AS CATEGORY")
+            println("USER SELECTED ${selectedCategory!!.name} AS CATEGORY")
             // Handle the selected category
         }
 
@@ -147,6 +153,36 @@ class CreatePostFragment : Fragment() {
                     }
                 }
             }
+        }
+
+
+        val submitBtn = binding.submitCreate
+        submitBtn.setOnClickListener {
+            val title = binding.titleCreate.editText?.text.toString()
+            val content = binding.contentCreate.editText?.text.toString()
+            val media = binding.mediaCreate.editText?.text.toString()
+
+            val tagIDs : MutableList<String> = mutableListOf()
+
+            for(tag in selectedTags){
+                tagIDs.add(tag.value)
+            }
+
+            if(title != "" && content != "" && media != "" && tagIDs.isNotEmpty()) {
+                val post = SubmittablePost(
+                    title, content, selectedCategory!!.id, tagIDs,media
+                )
+
+                println("POST SUBMITTED!")
+                println(post)
+
+                lifecycleScope.launch {
+                    _container.blogRepository.createPost(userSession.accessToken!!,post)
+                }
+            } else {
+                TODO("ERROR: Form not complete!")
+            }
+
         }
 
 

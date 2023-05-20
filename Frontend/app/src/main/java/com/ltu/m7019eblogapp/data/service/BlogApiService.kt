@@ -23,8 +23,8 @@ interface BlogApiService {
     ) : Post
     @POST("posts")
     suspend fun createPost(
-        @Header("authorization") auth: String,
-        @Body post: Post
+        @Header("authorization") accessToken: String,
+        @Body post: PostCreateBody
     )
     /*
     TODO: Implement when login is done

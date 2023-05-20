@@ -1,19 +1,19 @@
 package com.ltu.m7019eblogapp.data
 
 import com.auth0.android.result.Credentials
-import com.ltu.m7019eblogapp.data.service.BlogApiService
-import com.ltu.m7019eblogapp.data.service.CategorySearchBody
-import com.ltu.m7019eblogapp.data.service.PostSearchBody
-import com.ltu.m7019eblogapp.data.service.TagSearchBody
+import com.ltu.m7019eblogapp.data.service.*
 import com.ltu.m7019eblogapp.model.*
 import okhttp3.internal.wait
 import retrofit2.HttpException
+import retrofit2.http.Body
+import retrofit2.http.Header
 
 interface BlogRepository {
     //-----------------------------Posts-------------------------
 
     suspend fun getPosts(set: Int = 1) : List<Post>
     suspend fun getPost(post_id: String) : Post
+    suspend fun createPost(auth: String, post: SubmittablePost)
 
     //----------------------Users-------------------------------
 
@@ -52,6 +52,10 @@ class NetworkBlogRepository(private val api: BlogApiService) : BlogRepository {
 
     override suspend fun getPost(post_id: String): Post {
         return api.getPost(post_id)
+    }
+
+    override suspend fun createPost(accessToken: String, post: SubmittablePost) {
+        return api.createPost("Bearer $accessToken", PostCreateBody(post))
     }
 
     //----------------------Users-------------------------------

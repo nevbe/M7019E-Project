@@ -30,6 +30,20 @@ data class Post(
     var media: String,
 ) : Parcelable
 
+@Parcelize
+data class SubmittablePost(
+    @Json(name = "title")
+    var title: String,
+    @Json(name = "content")
+    var content: String,
+    @Json(name = "category_id")
+    var categoryId: String,
+    @Json(name = "tags_id")
+    var tagsId: List<String>,
+    @Json(name = "media")
+    var media: String,
+) : Parcelable
+
 
 /*
 {
