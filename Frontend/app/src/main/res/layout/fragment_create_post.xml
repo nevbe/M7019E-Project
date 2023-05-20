@@ -36,6 +36,7 @@
         android:layout_marginTop="8dp"
         android:hint="@string/title"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:errorEnabled="true"
         app:layout_constraintTop_toBottomOf="@id/text_dashboard"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -54,6 +55,7 @@
         android:layout_marginTop="8dp"
         android:hint="@string/content"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:errorEnabled="true"
         app:layout_constraintTop_toBottomOf="@id/title_create"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -72,6 +74,7 @@
         android:layout_marginTop="8dp"
         android:hint="@string/media_url"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:errorEnabled="true"
         app:layout_constraintTop_toBottomOf="@id/content_create"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -90,6 +93,7 @@
         android:layout_marginTop="8dp"
         android:hint="@string/category"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        app:errorEnabled="true"
         app:layout_constraintTop_toBottomOf="@id/media_create"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -109,6 +113,7 @@
         android:layout_marginTop="8dp"
         android:hint="@string/tag"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        app:errorEnabled="true"
         app:layout_constraintTop_toBottomOf="@id/category_create"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
