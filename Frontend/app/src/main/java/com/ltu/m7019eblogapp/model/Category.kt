@@ -7,9 +7,13 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Category(
     @Json(name = "_id")
-    var id: String,
+    var id: String = "",
     @Json(name = "name")
     var name: String,
     @Json(name = "description")
     var desc: String = ""
-    ) : Parcelable
+    ) : Parcelable {
+        override fun toString(): String {
+            return name
+        }
+    }

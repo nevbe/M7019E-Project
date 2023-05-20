@@ -44,7 +44,7 @@
     <string name="title">Title</string>
     <string name="content">Content</string>
     <string name="media_url">Media (url)</string>
-    <string name="tag">Tag</string>
+    <string name="tag">Add tag</string>
     <string name="category">Category</string>
     <string name="submit">Submit</string>
 

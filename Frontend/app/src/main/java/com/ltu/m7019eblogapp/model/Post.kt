@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Post(
     @Json(name = "_id")
-    var id: String,
+    var id: String = "",
     @Json(name = "title")
     var title: String,
     @Json(name = "created_at")

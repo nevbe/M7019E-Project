@@ -6,7 +6,11 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Tag (
     @Json(name = "_id")
-    var id: String,
+    var id: String = "",
     @Json(name = "name")
     var name: String
-    ) : Parcelable
+    ) : Parcelable {
+        override fun toString(): String {
+            return name
+        }
+    }

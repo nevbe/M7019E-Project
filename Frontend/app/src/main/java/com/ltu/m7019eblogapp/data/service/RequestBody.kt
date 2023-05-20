@@ -1,7 +1,9 @@
 package com.ltu.m7019eblogapp.data.service
 
 import android.os.Parcelable
+import com.ltu.m7019eblogapp.model.Category
 import com.ltu.m7019eblogapp.model.Post
+import com.ltu.m7019eblogapp.model.Tag
 import com.squareup.moshi.Json
 import kotlinx.parcelize.Parcelize
 
@@ -15,16 +17,14 @@ data class PostSearchBody(
 
 @Parcelize
 data class CategorySearchBody(
-    @Json(name = "name")
-    var name : String = "",
-    @Json(name = "description")
-    var desc : String = ""
+    @Json(name = "search")
+    var search : Category
 ) : Parcelable
 
 @Parcelize
 data class TagSearchBody(
-    @Json(name = "name")
-    var name : String = ""
+    @Json(name = "search")
+    var search : Tag
 ) : Parcelable
 
 
