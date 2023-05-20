@@ -155,8 +155,13 @@ class CreatePostFragment : Fragment() {
                 }
             } else {
                 selectedCategory = null
+                categorySelectView.clearListSelection()
             }
+
         }
+
+
+
     }
 
     private fun initTagAutoFill(){
