@@ -20,7 +20,7 @@ data class Post(
     var categoryId: String,
     @Json(name = "tags_id")
     var tagsId: List<String> = listOf(),
-    @Json(name = "User")
+    @Json(name = "user")
     var user: User? = null,
     @Json(name= "category")
     var category: Category? = null,

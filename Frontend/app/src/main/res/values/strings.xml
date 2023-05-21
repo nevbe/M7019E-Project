@@ -47,6 +47,7 @@
     <string name="tag">Add tag</string>
     <string name="category">Category</string>
     <string name="submit">Submit</string>
+    <string name="navigation_specific_post_label">View Post</string>
 
 
 </resources>

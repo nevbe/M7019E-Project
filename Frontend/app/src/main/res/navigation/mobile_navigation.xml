@@ -46,13 +46,21 @@
         <argument
             android:name="loggedInUser"
             app:argType="com.ltu.m7019eblogapp.model.User"/>
+        <action
+            android:id="@+id/action_navigation_browse_to_navigation_specific_post"
+            app:destination="@id/navigation_specific_post" />
+
     </fragment>
 
     <fragment
         android:id="@+id/navigation_specific_post"
         android:name="com.ltu.m7019eblogapp.ui.post.PostFragment"
-        android:label="@string/title_create_post"
+        android:label="@string/navigation_specific_post_label"
         tools:layout="@layout/fragment_create_post">
+
+        <argument
+            android:name="post"
+            app:argType="com.ltu.m7019eblogapp.model.Post"/>
 
     </fragment>
 

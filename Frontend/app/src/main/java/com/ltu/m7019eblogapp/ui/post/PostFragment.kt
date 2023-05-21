@@ -1,32 +1,52 @@
 package com.ltu.m7019eblogapp.ui.post
 
+import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
+import com.bumptech.glide.Glide
 import com.ltu.m7019eblogapp.R
+import com.ltu.m7019eblogapp.databinding.FragmentLoginBinding
+import com.ltu.m7019eblogapp.databinding.FragmentPostBinding
+import com.ltu.m7019eblogapp.model.Post
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Date
 
 class PostFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = PostFragment()
-    }
+    private var _binding: FragmentPostBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     private lateinit var viewModel: PostViewModel
+    private lateinit var post : Post
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_post, container, false)
-    }
+    ): View {
+        _binding = FragmentPostBinding.inflate(inflater)
+        post = PostFragmentArgs.fromBundle(requireArguments()).post
+        binding.post = post
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(PostViewModel::class.java)
-        // TODO: Use the ViewModel
+        println(post)
+
+        Glide.with(requireContext()).load(post.media).into(binding.headerImagePost)
+        Glide.with(requireContext()).load(post.user!!.profilePicture).into(binding.userPicPost)
+
+        val date = post.created_at.removeSuffix("Z")
+        val createdAt = LocalDateTime.parse(date)
+        "${createdAt.hour}:${createdAt.minute}, ${createdAt.month} ${createdAt.dayOfMonth}, ${createdAt.year}".also { binding.tvPostCreatedAt.text = it }
+
+        return binding.root
     }
 
 }

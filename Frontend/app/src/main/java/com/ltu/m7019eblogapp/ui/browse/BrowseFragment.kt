@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.ltu.m7019eblogapp.databinding.FragmentBrowseBinding
 
 class BrowseFragment : Fragment() {
@@ -40,6 +41,15 @@ class BrowseFragment : Fragment() {
         browseViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
+        browseViewModel.postList.observe(viewLifecycleOwner) { postList ->
+            binding.buttonLatest.visibility = View.VISIBLE
+            binding.buttonLatest.setOnClickListener {
+                findNavController().navigate(BrowseFragmentDirections.actionNavigationBrowseToNavigationSpecificPost(postList[0]))
+            }
+        }
+
+
         return root
     }
 
