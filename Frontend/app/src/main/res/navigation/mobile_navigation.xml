@@ -48,7 +48,9 @@
             app:argType="com.ltu.m7019eblogapp.model.User"/>
         <action
             android:id="@+id/action_navigation_browse_to_navigation_specific_post"
-            app:destination="@id/navigation_specific_post" />
+            app:destination="@id/navigation_specific_post"
+            app:enterAnim="@anim/anim_left_to_right"
+            app:popExitAnim="@anim/anim_right_to_left"/>
 
     </fragment>
 
@@ -84,8 +86,9 @@
 
     <action
         android:id="@+id/navigation_global_toFaq"
-        app:destination="@+id/navigation_faq"
-        />
+        app:destination="@id/navigation_faq"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim" />
 
     <action
         android:id="@+id/navigation_global_toProfile"
