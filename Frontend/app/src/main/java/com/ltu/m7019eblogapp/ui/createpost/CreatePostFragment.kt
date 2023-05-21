@@ -1,15 +1,12 @@
 package com.ltu.m7019eblogapp.ui.createpost
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.MultiAutoCompleteTextView
-import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -18,19 +15,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.android.material.textfield.TextInputLayout
 import com.ltu.m7019eblogapp.R
 import com.ltu.m7019eblogapp.data.DefaultAppContainer
 import com.ltu.m7019eblogapp.data.service.CategorySearchBody
 import com.ltu.m7019eblogapp.data.service.TagSearchBody
-import com.ltu.m7019eblogapp.data.util.DataFetchStatus
 import com.ltu.m7019eblogapp.databinding.FragmentCreatePostBinding
 import com.ltu.m7019eblogapp.model.Category
-import com.ltu.m7019eblogapp.model.Post
 import com.ltu.m7019eblogapp.model.SubmittablePost
 import com.ltu.m7019eblogapp.model.Tag
 import com.ltu.m7019eblogapp.ui.login.UserSessionViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 
 class CreatePostFragment : Fragment() {
 
@@ -226,47 +225,96 @@ class CreatePostFragment : Fragment() {
             tagIDs.add(tag.value)
         }
 
-        if(title != "" && content != "" && media != "" && tagIDs.isNotEmpty() && selectedCategory != null) {
-            val post = SubmittablePost(
-                title, content, selectedCategory!!.id, tagIDs,media
-            )
 
-            println("POST SUBMITTED!")
-            println(post)
+        lifecycleScope.launch {
+            val validMedia = isLoadableImage(media)
 
-            lifecycleScope.launch {
-                _container.blogRepository.createPost(userSession.accessToken!!,post)
-            }
-        } else {
-            if (title == "") {
-                binding.titleCreate.error = "Please enter a title"
+            if(title.isNotBlank() && content.isNotBlank() && media.isNotBlank() && tagIDs.isNotEmpty() && selectedCategory != null && validMedia) {
+                val post = SubmittablePost(
+                    title, content, selectedCategory!!.id, tagIDs,media
+                )
+                    _container.blogRepository.createPost(userSession.accessToken!!, post)
+                    println("POST SUBMITTED!")
+                    println(post)
+
+
             } else {
-                binding.titleCreate.error = null
+                if (title.isBlank()) {
+                    binding.titleCreate.error = "Please enter a title"
+                } else {
+                    binding.titleCreate.error = null
+                }
+                //--
+                if (content.isBlank()) {
+                    binding.contentCreate.error = "Please enter content"
+                } else {
+                    binding.contentCreate.error = null
+                }
+                //--
+                if (media.isBlank()) {
+                    binding.mediaCreate.error = "Please enter media"
+                } else {
+                    binding.mediaCreate.error = null
+                }
+                //--
+                if (tagIDs.isEmpty()) {
+                    binding.tagCreate.error = "Please add at least one tag"
+                } else {
+                    binding.tagCreate.error = null
+                }
+                //--
+                if (selectedCategory == null) {
+                    binding.categoryCreate.error = "Please select a category"
+                } else {
+                    binding.categoryCreate.error = null
+                }
+                //--
+                if (!validMedia){
+                    binding.mediaCreate.error = "Unable to get image, please enter a valid image URL"
+                } else {
+                    binding.mediaCreate.error = null
+                }
             }
-            //--
-            if (content == "") {
-                binding.contentCreate.error = "Please enter content"
-            } else {
-                binding.contentCreate.error = null
+        }
+
+
+    }
+
+    /**
+     * Checks if a given url string contains a loadable image
+     */
+    private suspend fun isLoadableImage(urlString: String): Boolean {
+        // Launch new scope based on parent context
+        return withContext(Dispatchers.IO) {
+            var connection: HttpURLConnection? = null
+
+            try {
+                // Open a new connection
+                val url = URL(urlString)
+                connection = url.openConnection() as HttpURLConnection
+                connection.doInput = true
+                connection.connect()
+
+                // Is the connection valid?
+                val responseCode = connection.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    // Check if the content type is image
+                    val contentType = connection.contentType
+                    if (contentType?.startsWith("image") == true) {
+                        // Attempt to parse input stream as an additional check
+                        val inputStream = connection.inputStream
+                        val bitmap = BitmapFactory.decodeStream(inputStream)
+                        return@withContext bitmap != null
+                    }
+                }
+            } catch (e: IOException) {
+                // Error!
+                e.printStackTrace()
+            } finally {
+                connection?.disconnect()
             }
-            //--
-            if (media == "") {
-                binding.mediaCreate.error = "Please enter media"
-            } else {
-                binding.mediaCreate.error = null
-            }
-            //--
-            if (tagIDs.isEmpty()) {
-                binding.tagCreate.error = "Please add at least one tag"
-            } else {
-                binding.tagCreate.error = null
-            }
-            //--
-            if (selectedCategory == null) {
-                binding.categoryCreate.error = "Please select a category"
-            } else {
-                binding.categoryCreate.error = null
-            }
+
+            return@withContext false
         }
     }
 
