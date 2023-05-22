@@ -9,6 +9,11 @@ import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
+import com.ltu.m7019eblogapp.adapter.PostClickListener
+import com.ltu.m7019eblogapp.adapter.PostListAdapter
+import com.ltu.m7019eblogapp.data.util.DataFetchStatus
 import com.ltu.m7019eblogapp.databinding.FragmentBrowseBinding
 
 class BrowseFragment : Fragment() {
@@ -31,21 +36,47 @@ class BrowseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val browseViewModel =
-            ViewModelProvider(this).get(BrowseViewModel::class.java)
 
         _binding = FragmentBrowseBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        browseViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+        val browseViewModel =
+            ViewModelProvider(this)[BrowseViewModel::class.java]
+
+        val postListAdapter = PostListAdapter(
+            PostClickListener { post ->
+                browseViewModel.onPostListItemClicked(post)
+            }
+        )
+        binding.postListRv.adapter = postListAdapter
 
         browseViewModel.postList.observe(viewLifecycleOwner) { postList ->
-            binding.buttonLatest.visibility = View.VISIBLE
-            binding.buttonLatest.setOnClickListener {
-                findNavController().navigate(BrowseFragmentDirections.actionNavigationBrowseToNavigationSpecificPost(postList[0]))
+            postList?.let {
+                postListAdapter.submitList(it)
+            }
+        }
+
+        browseViewModel.navigateToPost.observe(viewLifecycleOwner) { post ->
+            post?.let {
+                println("From fragment: Navigating to ${post.title}")
+                findNavController().navigate(
+                    BrowseFragmentDirections.actionNavigationBrowseToNavigationSpecificPost(it)
+                )
+                browseViewModel.onPostNavigationComplete()
+            }
+        }
+
+        browseViewModel.dataFetchStatus.observe(viewLifecycleOwner) { status ->
+            val loadingAnim = binding.postListProgress
+
+            when(status) {
+                DataFetchStatus.LOADING -> loadingAnim.visibility = View.VISIBLE
+                DataFetchStatus.DONE -> loadingAnim.visibility = View.GONE
+                DataFetchStatus.ERROR -> {
+                    loadingAnim.visibility = View.GONE
+                    showSnackBar("Error loading posts...")
+                }
+                null -> {}
             }
         }
 
@@ -56,5 +87,14 @@ class BrowseFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showSnackBar(text: String) {
+        Snackbar
+            .make(
+                binding.root,
+                text,
+                Snackbar.LENGTH_LONG
+            ).show()
     }
 }

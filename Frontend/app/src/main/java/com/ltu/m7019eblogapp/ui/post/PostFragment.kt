@@ -33,14 +33,12 @@ class PostFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        println("Entering...")
         _binding = FragmentPostBinding.inflate(inflater)
         post = PostFragmentArgs.fromBundle(requireArguments()).post
         binding.post = post
 
         println(post)
-
-        Glide.with(requireContext()).load(post.media).into(binding.headerImagePost)
-        Glide.with(requireContext()).load(post.user!!.profilePicture).into(binding.userPicPost)
 
         val date = post.created_at.removeSuffix("Z")
         val createdAt = LocalDateTime.parse(date)

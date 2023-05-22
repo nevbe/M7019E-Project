@@ -4,11 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.ltu.m7019eblogapp.model.User"/>
-
-        <variable
-            name="loggedInUser"
-            type="com.ltu.m7019eblogapp.model.User" />
         <variable
             name="post"
             type="com.ltu.m7019eblogapp.model.Post"/>
@@ -30,7 +25,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:contentDescription="Header image" />
+        android:contentDescription="Header image"
+        loadImageFromUrl="@{post.media}"/>
 
     <TextView
         android:id="@+id/tv_post_title"
@@ -53,6 +49,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_post_author"
         app:layout_constraintBottom_toBottomOf="@id/tv_post_author"
+        app:loadImageFromUrl="@{post.user.profilePicture}"
         />
 
     <TextView
