@@ -13,11 +13,18 @@
 
         <action
             android:id="@+id/action_LoginFragment_to_HomeFragment"
-            app:popUpTo="@id/mobile_navigation"
-            app:popUpToInclusive="true"
-            app:destination="@+id/navigation_home"/>
+            app:destination="@id/navigation_host"
+            app:popUpTo="@id/navigation_host"/>
 
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_host"
+        android:name="com.ltu.m7019eblogapp.ui.ViewPagerHostFragment"
+        android:label=""
+    />
+
+
 
     <fragment
         android:id="@+id/navigation_home"
@@ -46,13 +53,10 @@
         <argument
             android:name="loggedInUser"
             app:argType="com.ltu.m7019eblogapp.model.User"/>
-        <action
-            android:id="@+id/action_navigation_browse_to_navigation_specific_post"
-            app:destination="@id/navigation_specific_post"
-            app:enterAnim="@anim/anim_left_to_right"
-            app:popExitAnim="@anim/anim_right_to_left"/>
 
     </fragment>
+
+
 
     <fragment
         android:id="@+id/navigation_specific_post"
@@ -63,6 +67,10 @@
         <argument
             android:name="post"
             app:argType="com.ltu.m7019eblogapp.model.Post"/>
+        <action
+            android:id="@+id/action_navigation_specific_post_to_navigation_host"
+
+            app:destination="@id/navigation_host" />
 
     </fragment>
 
@@ -75,6 +83,10 @@
         <action
             android:id="@+id/action_ProfileFragment_to_LoginFragment"
             app:destination="@+id/navigation_login" />
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_host"
+
+            app:destination="@id/navigation_host" />
 
     </fragment>
 
@@ -82,7 +94,18 @@
         android:id="@+id/navigation_faq"
         android:name="com.ltu.m7019eblogapp.ui.faq.FaqFragment"
         android:label="FAQ"
-        tools:layout="@layout/fragment_faq"/>
+        tools:layout="@layout/fragment_faq">
+        <action
+            android:id="@+id/action_navigation_faq_to_navigation_host"
+
+            app:destination="@id/navigation_host" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_to_navigation_specific_post"
+        app:destination="@id/navigation_specific_post"
+        app:enterAnim="@anim/anim_left_to_right"
+        app:popExitAnim="@anim/anim_right_to_left"/>
 
     <action
         android:id="@+id/navigation_global_toFaq"
@@ -94,5 +117,11 @@
         android:id="@+id/navigation_global_toProfile"
         app:destination="@+id/navigation_profile"
          />
+
+    <action
+        android:id="@+id/navigation_global_toNavHost"
+        app:destination="@id/navigation_host"
+        app:popUpTo="@id/navigation_host"
+        />
 
 </navigation>

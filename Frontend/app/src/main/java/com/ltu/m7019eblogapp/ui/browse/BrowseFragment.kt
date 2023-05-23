@@ -28,7 +28,9 @@ class BrowseFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         // Override back action, bottom destinations should act as nav root
-        requireActivity().onBackPressedDispatcher.addCallback(this) {}
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+
+        }
     }
 
     override fun onCreateView(
@@ -60,7 +62,7 @@ class BrowseFragment : Fragment() {
             post?.let {
                 println("From fragment: Navigating to ${post.title}")
                 findNavController().navigate(
-                    BrowseFragmentDirections.actionNavigationBrowseToNavigationSpecificPost(it)
+                    BrowseFragmentDirections.actionGlobalToNavigationSpecificPost(it)
                 )
                 browseViewModel.onPostNavigationComplete()
             }

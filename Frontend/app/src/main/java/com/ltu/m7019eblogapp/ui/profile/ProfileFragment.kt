@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -41,6 +42,15 @@ class ProfileFragment : Fragment() {
     private lateinit var manager: CredentialsManager
 
     private val userSession : UserSessionViewModel by activityViewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Override back action, bottom destinations should act as nav root
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            findNavController().navigate(ProfileFragmentDirections.actionNavigationProfileToNavigationHost())
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

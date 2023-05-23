@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
@@ -14,12 +15,18 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
+import com.ltu.m7019eblogapp.adapter.ViewPagerAdapter
 import com.ltu.m7019eblogapp.databinding.ActivityMainBinding
 import com.ltu.m7019eblogapp.model.User
+import com.ltu.m7019eblogapp.ui.ViewPagerHostFragmentDirections
+import com.ltu.m7019eblogapp.ui.browse.BrowseFragment
+import com.ltu.m7019eblogapp.ui.createpost.CreatePostFragment
 import com.ltu.m7019eblogapp.ui.faq.FaqFragmentDirections
+import com.ltu.m7019eblogapp.ui.home.HomeFragment
 import com.ltu.m7019eblogapp.ui.profile.ProfileFragmentDirections
 
 class MainActivity : AppCompatActivity() {
@@ -36,23 +43,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(findViewById(R.id.topAppBar))
+
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
 
-        setSupportActionBar(findViewById(R.id.topAppBar))
+        val config = AppBarConfiguration(setOf(R.id.navigation_host))
+        setupActionBarWithNavController(navController,config)
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.navigation_home, R.id.navigation_create, R.id.navigation_browse
-            )
-        )
 
-        setupActionBarWithNavController(navController, appBarConfiguration)
-
-        val navView = binding.navView
-        navView.setupWithNavController(navController)
 
         /*
         TODO: enableUI is called from loginfragment, which is kind of a hack
@@ -83,24 +82,17 @@ class MainActivity : AppCompatActivity() {
                 .override(85,85) // Set image size
                 .into(profilePicView!!);  // imageview object
 
-
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
             val navController = navHostFragment.navController
 
             profilePicView.setOnClickListener {
                 println("Backstackentry: ${navController.currentBackStackEntry?.destination}")
-                if(navController.currentBackStackEntry?.destination?.id != R.id.navigation_faq){
-                    navController.popBackStack() //Prevent fragment to display over previous fragment
-                }
                 navController.navigate(ProfileFragmentDirections.navigationGlobalToProfile())
             }
 
             val faqItem : MenuItem = menu.findItem(R.id.navigation_faq)
             faqItem.setOnMenuItemClickListener {
                 println("Backstackentry: ${navController.currentBackStackEntry?.destination}")
-                if(navController.currentBackStackEntry?.destination?.id != R.id.navigation_profile){
-                    navController.popBackStack() //Prevent fragment to display over previous fragment
-                }
                 navController.navigate(FaqFragmentDirections.navigationGlobalToFaq())
 
                 true

@@ -7,12 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.annotation.RequiresApi
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.ltu.m7019eblogapp.R
 import com.ltu.m7019eblogapp.databinding.FragmentLoginBinding
 import com.ltu.m7019eblogapp.databinding.FragmentPostBinding
 import com.ltu.m7019eblogapp.model.Post
+import com.ltu.m7019eblogapp.ui.profile.ProfileFragmentDirections
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -28,6 +31,15 @@ class PostFragment : Fragment() {
 
     private lateinit var viewModel: PostViewModel
     private lateinit var post : Post
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Override back action, bottom destinations should act as nav root
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            findNavController().navigate(PostFragmentDirections.actionNavigationSpecificPostToNavigationHost())
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
