@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Button
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
@@ -14,13 +17,19 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.DialogFragmentNavigatorDestinationBuilder
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.sidesheet.SideSheetDialog
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import com.ltu.m7019eblogapp.R
 import com.ltu.m7019eblogapp.adapter.PostClickListener
 import com.ltu.m7019eblogapp.adapter.PostListAdapter
 import com.ltu.m7019eblogapp.data.util.DataFetchStatus
 import com.ltu.m7019eblogapp.databinding.FragmentHomeBinding
+import com.ltu.m7019eblogapp.model.Category
+import com.ltu.m7019eblogapp.model.Tag
 import com.ltu.m7019eblogapp.ui.createpost.CreatePostFragment
 
 class HomeFragment : Fragment() {
@@ -31,6 +40,9 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private val selectedTags : MutableList<Tag> = mutableListOf()
+    private var selectedCategory : Category? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,30 +103,94 @@ class HomeFragment : Fragment() {
         }
 
         binding.homeBtnCreate.setOnClickListener{
-
             CreatePostFragment().show(parentFragmentManager, "Create Post")
-            /*
-            // The device is smaller, so show the fragment fullscreen
-            val transaction = parentFragmentManager.beginTransaction()
-            // For a little polish, specify a transition animation
-            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            // To make it fullscreen, use the 'content' root view as the container
-            // for the fragment, which is always the root view for the activity
-            transaction
-                .add(R.id.nav_host_fragment_activity_main, CreatePostFragment())
-                .addToBackStack(null)
-                .commit()
+        }
 
-             */
+        val sideSheetDialog = SideSheetDialog(requireContext())
+        sideSheetDialog.setContentView(R.layout.filter_side_sheet)
+
+        val button = sideSheetDialog.findViewById<Button>(R.id.sidesheet_button)
+        button?.setOnClickListener {
+            homeViewModel.updatePostsWithFilter(selectedCategory,selectedTags)
+            sideSheetDialog.hide()
+        }
+
+        val resetButton = sideSheetDialog.findViewById<Button>(R.id.sidesheet_button_reset)
+        resetButton?.setOnClickListener {
+            homeViewModel.getPosts()
+            selectedTags.clear()
+            selectedCategory = null
+
+            val chipGropView : ChipGroup? = sideSheetDialog.findViewById(R.id.sheet_tag_chipGroup)
+            chipGropView?.clearCheck()
+
+            val categorySelectView = sideSheetDialog.findViewById(R.id.sheet_category_field) as? AutoCompleteTextView
+            categorySelectView?.clearListSelection()
+            categorySelectView?.text?.clear()
+
+            sideSheetDialog.hide()
+        }
+
+        homeViewModel.tagList.observe(viewLifecycleOwner) { tagList ->
+            tagList?.let{
+                addChips(tagList, sideSheetDialog)
+            }
+        }
+
+        homeViewModel.categoryList.observe(viewLifecycleOwner) { categories ->
+            categories?.let {
+                addCategories(categories, sideSheetDialog)
+            }
+        }
 
 
-
-
-
+        binding.homeBtnFilter.setOnClickListener{
+            sideSheetDialog.show()
         }
 
 
         return root
+    }
+
+    private fun addChips(tags: List<Tag>, dialog: SideSheetDialog){
+        val chipGropView : ChipGroup? = dialog.findViewById(R.id.sheet_tag_chipGroup)
+
+        chipGropView?.let {
+            for(tag in tags){
+                println("Adding tag")
+                chipGropView.addView(getChip(tag))
+            }
+        }
+
+    }
+
+    private fun getChip(tag: Tag) : Chip {
+        return Chip(requireContext()).apply {
+            text = tag.name
+            isCheckable = true
+            setOnCheckedChangeListener { _, checked ->
+                if(!checked){
+                    selectedTags.remove(tag)
+                    println("Selected tags: $selectedTags")
+                } else {
+                    selectedTags.add(tag)
+                    println("Selected tags: $selectedTags")
+                }
+            }
+        }
+    }
+
+    private fun addCategories(categories: List<Category>, dialog: SideSheetDialog){
+        val categoryAdapter = ArrayAdapter(requireContext(), R.layout.fragment_create_post_list_item, categories)
+        val categorySelectView = dialog.findViewById(R.id.sheet_category_field) as? AutoCompleteTextView
+
+        categorySelectView?.setAdapter(categoryAdapter)
+
+        categorySelectView?.setOnItemClickListener { parent, _, position, _ ->
+            // Handle the selected category
+            selectedCategory = parent.getItemAtPosition(position) as Category
+            println("USER SELECTED ${selectedCategory!!.name} AS CATEGORY")
+        }
     }
 
     override fun onDestroyView() {
