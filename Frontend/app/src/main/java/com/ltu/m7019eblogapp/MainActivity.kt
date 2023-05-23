@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toolbar
 import androidx.appcompat.app.ActionBarDrawerToggle
 
 import androidx.appcompat.app.AppCompatActivity
@@ -70,9 +71,16 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val navigationView = binding.navView
+        val topAppBar = binding.topAppBar
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
+
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.navigation_home, R.id.navigation_faq, R.id.navigation_profile), drawerLayout)
+        topAppBar.setupWithNavController(navController, appBarConfiguration)
+
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        navView.setupWithNavController(navController)
 
         navigationView.setNavigationItemSelectedListener { item ->
             println("PRESSED")
@@ -80,7 +88,6 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.top_nav_home -> {
                     navController.navigate(R.id.navigation_home)
-                    println ("home!!!!")
                 }
                 R.id.top_nav_faq -> navController.navigate(R.id.navigation_faq)
                 R.id.top_nav_profile -> navController.navigate(R.id.navigation_profile)

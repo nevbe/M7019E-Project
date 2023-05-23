@@ -1,14 +1,19 @@
 package com.ltu.m7019eblogapp.ui.createpost
 
+import android.app.Dialog
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.activity.addCallback
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
@@ -32,7 +37,7 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 
-class CreatePostFragment : Fragment() {
+class CreatePostFragment : DialogFragment() {
 
     private var _binding: FragmentCreatePostBinding? = null
 
@@ -48,6 +53,27 @@ class CreatePostFragment : Fragment() {
     private var selectedCategory : Category? = null
 
     private val userSession : UserSessionViewModel by activityViewModels()
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+
+        // Set dialog style
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+
+        // Inflate the layout for the dialog
+        val inflater = layoutInflater
+        val view = inflater.inflate(R.layout.fragment_create_post, null)
+
+        // Set dialog width and height
+        val width = resources.displayMetrics.widthPixels * 9 / 10 // Adjust the width as per your requirement
+        val height = ViewGroup.LayoutParams.WRAP_CONTENT
+
+        dialog.setContentView(view)
+        dialog.window?.setLayout(width, height)
+
+        return dialog
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -81,7 +107,9 @@ class CreatePostFragment : Fragment() {
         initTagAutoFill()
 
         val submitBtn = binding.submitCreate
-        submitBtn.setOnClickListener { submitPost() }
+        submitBtn.setOnClickListener {
+            submitPost()
+        }
 
         return root
     }
@@ -229,6 +257,7 @@ class CreatePostFragment : Fragment() {
                 )
                     _container.blogRepository.createPost(userSession.accessToken!!, post)
                     findNavController().navigate(R.id.navigation_home)
+                    dismiss()
                     println("POST SUBMITTED!")
                     println(post)
 

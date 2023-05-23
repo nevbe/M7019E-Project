@@ -7,17 +7,21 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.DialogFragmentNavigatorDestinationBuilder
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.ltu.m7019eblogapp.R
 import com.ltu.m7019eblogapp.adapter.PostClickListener
 import com.ltu.m7019eblogapp.adapter.PostListAdapter
 import com.ltu.m7019eblogapp.data.util.DataFetchStatus
 import com.ltu.m7019eblogapp.databinding.FragmentHomeBinding
+import com.ltu.m7019eblogapp.ui.createpost.CreatePostFragment
 
 class HomeFragment : Fragment() {
 
@@ -87,7 +91,26 @@ class HomeFragment : Fragment() {
         }
 
         binding.homeBtnCreate.setOnClickListener{
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToCreateFragment())
+
+            CreatePostFragment().show(parentFragmentManager, "Create Post")
+            /*
+            // The device is smaller, so show the fragment fullscreen
+            val transaction = parentFragmentManager.beginTransaction()
+            // For a little polish, specify a transition animation
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            // To make it fullscreen, use the 'content' root view as the container
+            // for the fragment, which is always the root view for the activity
+            transaction
+                .add(R.id.nav_host_fragment_activity_main, CreatePostFragment())
+                .addToBackStack(null)
+                .commit()
+
+             */
+
+
+
+
+
         }
 
 
