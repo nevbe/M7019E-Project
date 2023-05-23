@@ -3,7 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_create_post">Create Post</string>
     <string name="title_browse">Browse</string>
-    <string name="top_header_title">Profile</string>
+    <string name="top_header_title">Home</string>
 
     <!--
     Auth0 identifiers and settings
@@ -49,5 +49,8 @@
     <string name="submit">Submit</string>
     <string name="navigation_specific_post_label">View Post</string>
 
+    <!-- Nav bar -->
+    <string name="open_nav">Open Navigation Drawer</string>
+    <string name="close_nav">Close Navigation Drawer</string>
 
 </resources>

@@ -43,14 +43,6 @@ class ProfileFragment : Fragment() {
 
     private val userSession : UserSessionViewModel by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Override back action, bottom destinations should act as nav root
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            findNavController().navigate(ProfileFragmentDirections.actionNavigationProfileToNavigationHost())
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -96,7 +88,7 @@ class ProfileFragment : Fragment() {
     /**
      * Initiate AUTH0 logout flow
      */
-    private fun doLogout(){
+    fun doLogout(){
         WebAuthProvider.logout(account).withScheme(getString(R.string.com_auth0_scheme))
             .start(this.requireContext(), object : Callback<Void?, AuthenticationException> {
                 override fun onFailure(error: AuthenticationException) {

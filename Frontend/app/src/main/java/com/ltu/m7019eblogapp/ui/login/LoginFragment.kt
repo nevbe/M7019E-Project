@@ -88,6 +88,10 @@ class LoginFragment : Fragment() {
                         println("loading user...")
                     }
                     DataFetchStatus.ERROR -> {
+                        val userSession : UserSessionViewModel by activityViewModels()
+                        userSession.user = null
+                        userSession.accessToken = null
+
                         binding.buttonLogin.visibility = View.VISIBLE
                         binding.textLoadingLogin.visibility = View.GONE
                         binding.progressCircularLoadingLogin.visibility = View.GONE
@@ -102,8 +106,7 @@ class LoginFragment : Fragment() {
                         userSession.accessToken = cachedCredentials!!.accessToken
 
                         (activity as MainActivity).enableUI(userSession.user!!)
-                        val navController = this.findNavController()
-                        navController.navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
+                        findNavController().navigate(LoginFragmentDirections.actionLoginFragmentToHomeFragment())
                     }
                 }
             }

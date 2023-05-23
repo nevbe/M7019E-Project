@@ -6,15 +6,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.ltu.m7019eblogapp.ui.browse.BrowseFragment
-import com.ltu.m7019eblogapp.ui.createpost.CreatePostFragment
-import com.ltu.m7019eblogapp.ui.home.HomeFragment
 
 class ViewPagerAdapter(
     private val fragments: List<Fragment>,
     fragmentManager: FragmentManager,
-    lifecycle: Lifecycle)
-    : FragmentStateAdapter(fragmentManager, lifecycle) {
+    lifecycle: Lifecycle
+) : FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int = fragments.size
 
@@ -22,4 +19,4 @@ class ViewPagerAdapter(
         return fragments[position]
     }
 
-    }
+}

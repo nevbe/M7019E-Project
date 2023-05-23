@@ -32,14 +32,6 @@ class PostFragment : Fragment() {
     private lateinit var viewModel: PostViewModel
     private lateinit var post : Post
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Override back action, bottom destinations should act as nav root
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            findNavController().navigate(PostFragmentDirections.actionNavigationSpecificPostToNavigationHost())
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

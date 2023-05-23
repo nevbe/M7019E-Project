@@ -19,14 +19,6 @@ class FaqFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Override back action, bottom destinations should act as nav root
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            findNavController().navigate(FaqFragmentDirections.actionNavigationFaqToNavigationHost())
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

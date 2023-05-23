@@ -8,11 +8,19 @@ import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavHostController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.ltu.m7019eblogapp.R
+import com.ltu.m7019eblogapp.adapter.PostClickListener
+import com.ltu.m7019eblogapp.adapter.PostListAdapter
+import com.ltu.m7019eblogapp.data.util.DataFetchStatus
 import com.ltu.m7019eblogapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
+
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -23,9 +31,10 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Override backaction, bottom destinations should act as nav root
-        // This also prevents users from going back to login screen from home.
-        requireActivity().onBackPressedDispatcher.addCallback(this) {}
+        // Override back action, bottom destinations should act as nav root
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+
+        }
     }
 
     override fun onCreateView(
@@ -33,21 +42,69 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        val homeViewModel =
+            ViewModelProvider(this)[HomeViewModel::class.java]
+
+        val postListAdapter = PostListAdapter(
+            PostClickListener { post ->
+                homeViewModel.onPostListItemClicked(post)
+            }
+        )
+        binding.postListRv.adapter = postListAdapter
+
+        homeViewModel.postList.observe(viewLifecycleOwner) { postList ->
+            postList?.let {
+                postListAdapter.submitList(it)
+            }
         }
+
+        homeViewModel.navigateToPost.observe(viewLifecycleOwner) { post ->
+            post?.let {
+                println("From fragment: Navigating to ${post.title}")
+                findNavController().navigate(
+                    HomeFragmentDirections.actionGlobalToNavigationSpecificPost(it)
+                )
+                homeViewModel.onPostNavigationComplete()
+            }
+        }
+
+        homeViewModel.dataFetchStatus.observe(viewLifecycleOwner) { status ->
+            val loadingAnim = binding.postListProgress
+
+            when (status) {
+                DataFetchStatus.LOADING -> loadingAnim.visibility = View.VISIBLE
+                DataFetchStatus.DONE -> loadingAnim.visibility = View.GONE
+                DataFetchStatus.ERROR -> {
+                    loadingAnim.visibility = View.GONE
+                    showSnackBar("Error loading posts...")
+                }
+                null -> {}
+            }
+        }
+
+        binding.homeBtnCreate.setOnClickListener{
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToCreateFragment())
+        }
+
+
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showSnackBar(text: String) {
+        Snackbar
+            .make(
+                binding.root,
+                text,
+                Snackbar.LENGTH_LONG
+            ).show()
     }
 }

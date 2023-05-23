@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.ltu.m7019eblogapp.R
@@ -47,13 +48,6 @@ class CreatePostFragment : Fragment() {
     private var selectedCategory : Category? = null
 
     private val userSession : UserSessionViewModel by activityViewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Override back action, bottom destinations should act as nav root
-        requireActivity().onBackPressedDispatcher.addCallback(this) {}
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -234,6 +228,7 @@ class CreatePostFragment : Fragment() {
                     title, content, selectedCategory!!.id, tagIDs,media
                 )
                     _container.blogRepository.createPost(userSession.accessToken!!, post)
+                    findNavController().navigate(R.id.navigation_home)
                     println("POST SUBMITTED!")
                     println(post)
 
